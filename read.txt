@@ -1,0 +1,2 @@
+
+http://spencernusbaum.com/wordpress/index.php/2018/07/22/working-with-the-nrf24l01-transcievers-on-the-raspberry-pi-and-arduino/
