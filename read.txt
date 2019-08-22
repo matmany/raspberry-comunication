@@ -1,2 +1,5 @@
 
 http://spencernusbaum.com/wordpress/index.php/2018/07/22/working-with-the-nrf24l01-transcievers-on-the-raspberry-pi-and-arduino/
+http://thezanshow.com/electronics-tutorials/raspberry-pi/tutorial-32-33
+https://github.com/r3ek0/python-nrf24
+https://github.com/BLavery/lib_nrf24
