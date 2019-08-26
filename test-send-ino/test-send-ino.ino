@@ -17,6 +17,6 @@ void setup(void){
 void loop(void){
   const char text[] = "Hello World!" ;
   radio.write(&text, sizeof(text)) ;
-  delay(1000) ;
+  
   
 }

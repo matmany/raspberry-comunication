@@ -26,23 +26,14 @@ void loop(void){
   Serial.println("Starting loop. Radio on.") ;
   char receivedMessage[32] = {0} ;
   if (radio.available()){
-    radio.read(receivedMessage, sizeof(receivedMessage));
-    Serial.println(receivedMessage) ;
-    Serial.println("Turning off the radio.") ;
-    radio.stopListening() ;
-    
-    String stringMessage(receivedMessage) ;
-    
-    if (stringMessage == "GETSTRING"){
-      Serial.println("Looks like they want a string!") ;
-      const char text[] = "Hello World!" ;
-      radio.write(text, sizeof(text)) ;
-      Serial.println("We sent our message.") ;
-    }
+    while(radio.available()){
+      radio.read(receivedMessage, sizeof(receivedMessage));
+      Serial.println(receivedMessage) ;
+      Serial.println("Turning off the radio.") ;}
     
   }
   
-  delay(100) ;
+  delay(100);
   
   
 }
