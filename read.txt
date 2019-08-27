@@ -3,3 +3,9 @@ http://spencernusbaum.com/wordpress/index.php/2018/07/22/working-with-the-nrf24l
 http://thezanshow.com/electronics-tutorials/raspberry-pi/tutorial-32-33
 https://github.com/r3ek0/python-nrf24
 https://github.com/BLavery/lib_nrf24
+https://rlogiacco.wordpress.com/2014/02/26/nrf24-on-raspberry-pi/
+https://pinout.xyz/pinout/spi#
+https://www.raspberrypi.org/forums/viewtopic.php?t=85504
+https://iot.stackexchange.com/questions/3905/unable-to-configure-nrf24l01-with-raspberry-pi-3-b
+https://www.raspberrypi.org/forums/viewtopic.php?t=91043 tentar
+https://www.riyas.org/2014/08/raspberry-pi-as-nrf24l01-base-station-internet-connected-wireless.html tentar
