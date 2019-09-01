@@ -5,20 +5,11 @@ import spidev
 
 GPIO.setmode(GPIO.BCM)
 pin = 19
-message = list("1")
-while len(message) <32:
-   message.append(0)
 #GPIO.setup(pin, GPIO.OUT)
 #GPIO.output(pin, False)
 #pipes = [[0xE8, 0xE8, 0xF0, 0xF0, 0xE1], [0xF0, 0xF0, 0xF0, 0xF0, 0xE1]]
 pipes = ["1Node", "2Node", "3Node"]
-
-pipe1 = "1Node"
-hexaCode = []
-for letter in pipe1:
-     hexaCode.append(ord(letter))
-test = list(reversed(hexaCode))
-#hexaCode.append(0)
+pipe1 = b"1Node"
 pipes2 = [[0xE8, 0xE8, 0xF0, 0xF0, 0xE1], [0xF0, 0xF0, 0xF0, 0xF0, 0xE1]]
 
 radio = NRF24(GPIO, spidev.SpiDev())
@@ -34,14 +25,11 @@ radio.enableDynamicPayloads()
 radio.enableAckPayload()
 radio.setCRCLength(2)
 
-radio.openWritingPipe(pipes2[0])
-#radio.openReadingPipe(1, pipes2[1])
-radio.openReadingPipe(1,test)
+radio.openReadingPipe(1, pipes2[1])
 radio.printDetails()
 radio.startListening()
 # radio.print_status()
 radio.powerUp()
-#print("1Node".enconde("hex"))
 try:
     while True:
         # radio.printDetails()
@@ -51,23 +39,18 @@ try:
             time.sleep(1/100)
             #print("not online")
 
-        while radio.available(0):
-            receivedMessage = []
-            radio.read(receivedMessage, radio.getDynamicPayloadSize())
-            print("Received: {}".format(receivedMessage))
+        receivedMessage = []
+        radio.read(receivedMessage, radio.getDynamicPayloadSize())
+        print("Received: {}".format(receivedMessage))
 
-            print("Translating our received Message into unicode characters...")
-            string = ""
+        print("Translating our received Message into unicode characters...")
+        string = ""
 
-            for n in receivedMessage:
-               if (n >= 32 and n <= 126):
-                   string += chr(n)
-            print("Our received message decodes to: {}".format(string))
-            time.sleep(1)
-
-        radio.stopListening()
-        radio.write(message)
-        radio.startListening()
+        for n in receivedMessage:
+            if (n >= 32 and n <= 126):
+                string += chr(n)
+        print("Our received message decodes to: {}".format(string))
+        time.sleep(1)
 except KeyboardInterrupt:
     print("\n")
 except:

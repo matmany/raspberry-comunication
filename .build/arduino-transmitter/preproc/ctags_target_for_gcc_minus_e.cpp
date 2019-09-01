@@ -1,21 +1,33 @@
+# 1 "c:\\Users\\matmany\\Desktop\\Iron_lady\\Projetos\\Andamento\\Fapes\\main\\raspberry-comunication\\arduino-transmitter\\arduino-transmitter.ino"
+# 1 "c:\\Users\\matmany\\Desktop\\Iron_lady\\Projetos\\Andamento\\Fapes\\main\\raspberry-comunication\\arduino-transmitter\\arduino-transmitter.ino"
 /*
+
    ------Projeto Wearables------
+
    
+
    NERA e Nu[Tec]² - IFES Serra
+
    Comunicação Arduino <--> Arduino
+
    Módulos Transmissores
+
     
+
    Autor: Magnu Windell Araújo Santos, Julho 2019
+
   testado...git
+
 */
+# 11 "c:\\Users\\matmany\\Desktop\\Iron_lady\\Projetos\\Andamento\\Fapes\\main\\raspberry-comunication\\arduino-transmitter\\arduino-transmitter.ino"
 // ===============================================================================
 // --- Bibliotecas ---
-#include <SPI.h>  //Serial Peripheral Interface (SPI)
-#include "RF24.h" //Biblioteca para NRF24L01 
-#include "printf.h"
+# 14 "c:\\Users\\matmany\\Desktop\\Iron_lady\\Projetos\\Andamento\\Fapes\\main\\raspberry-comunication\\arduino-transmitter\\arduino-transmitter.ino" 2
+# 15 "c:\\Users\\matmany\\Desktop\\Iron_lady\\Projetos\\Andamento\\Fapes\\main\\raspberry-comunication\\arduino-transmitter\\arduino-transmitter.ino" 2
+
 // ===============================================================================
 // --- ID ---
-#define ID "AA02"
+
 
 // ===============================================================================
 // --- Variáveis Globais ---
@@ -35,37 +47,20 @@ char tramac[13];
 // --- Configurações Iniciais ---
 void setup() {
   Serial.begin(9600); //Inicia comunicação com Monitor Serial
-  printf_begin();
   radio.begin(); //Inicia comunicação do objeto radio
-  radio.setPALevel(RF24_PA_MIN); //Configura potência do objeto radio
-  radio.setDataRate(RF24_1MBPS );
-  radio.setChannel(0X76);
-  radio.enableDynamicPayloads();
-  radio.powerUp();
+  radio.setPALevel(RF24_PA_HIGH); //Configura potência do objeto radio
+
   switch(radioNumber){ //Configura os pipes de acordo com o número do radio
     case 1:
-      radio.openWritingPipe(addresses[0]); //Radio1: Fala no pipe 1
-      radio.openReadingPipe(1,addresses[1]); //Radio1: Escuta no pipe 0
-      break;
-    
+    radio.openWritingPipe(addresses[0]); //Radio1: Fala no pipe 1
+    radio.openReadingPipe(1,addresses[1]); //Radio1: Escuta no pipe 0
+    break;
+
     case 2:
-      //radio.openWritingPipe(0xF0F0F0F0E1LL);
-      radio.openWritingPipe(addresses[0]); //Radio0: Fala no pipe 2
-      //radio.openReadingPipe(1,addresses[2]); //Radio0: Escuta no pipe 0
-      radio.openReadingPipe(1,0xE8E8F0F0E1LL);
-      break;
+    radio.openWritingPipe(addresses[0]); //Radio0: Fala no pipe 2
+    radio.openReadingPipe(1,addresses[2]); //Radio0: Escuta no pipe 0
+    break;
   }
-  Serial.println(addresses[1][0]);
-  Serial.println(addresses[0][1]);
-  Serial.println(addresses[0][2]);
-  Serial.println(addresses[0][3]);
-  Serial.println(addresses[0][4]);
-  Serial.println(addresses[0][5]);
-  Serial.println(addresses[0][6]);
-  Serial.println(addresses[0][7]);
-  Serial.println(addresses[0][8]);
-  Serial.println(addresses[0][9]);
-  radio.printDetails();
 }
 
 
@@ -78,34 +73,39 @@ void loop() {
 
     s1s = getPadded(s1);
     s2s = getPadded(s2);
-    trama = String(ID + s1s + s2s);
+    trama = String("AA02" + s1s + s2s);
     trama.toCharArray(tramac, 13);
-  
+
     radio.stopListening(); // Para de escutar
 
-    Serial.print(F("Enviando: "));      //Imprime "Enviando" na Serial
-    Serial.print(tramac);              //Imprime Trama enviada
-    if (!radio.write( tramac, 13)){    //Envia a Trama
-      Serial.println(": Falha");          //Imprime "Falha" caso não seja enviada
+    Serial.print((reinterpret_cast<const __FlashStringHelper *>(
+# 69 "c:\\Users\\matmany\\Desktop\\Iron_lady\\Projetos\\Andamento\\Fapes\\main\\raspberry-comunication\\arduino-transmitter\\arduino-transmitter.ino" 3
+                (__extension__({static const char __c[] __attribute__((__progmem__)) = (
+# 69 "c:\\Users\\matmany\\Desktop\\Iron_lady\\Projetos\\Andamento\\Fapes\\main\\raspberry-comunication\\arduino-transmitter\\arduino-transmitter.ino"
+                "Enviando: "
+# 69 "c:\\Users\\matmany\\Desktop\\Iron_lady\\Projetos\\Andamento\\Fapes\\main\\raspberry-comunication\\arduino-transmitter\\arduino-transmitter.ino" 3
+                ); &__c[0];}))
+# 69 "c:\\Users\\matmany\\Desktop\\Iron_lady\\Projetos\\Andamento\\Fapes\\main\\raspberry-comunication\\arduino-transmitter\\arduino-transmitter.ino"
+                ))); //Imprime "Enviando" na Serial
+    Serial.print(tramac); //Imprime Trama enviada
+    if (!radio.write( tramac, 13)){ //Envia a Trama
+      Serial.println(": Falha"); //Imprime "Falha" caso não seja enviada
      }
-     else {
-      Serial.println("Sucesso");
-     }
-          
+
       radio.startListening(); //Volta a escutar
-      
+
       unsigned long waiting_time = micros(); //Armazena o tempo atual para TIMEOUT
       boolean timeout = false; //Variável para indicação de TIMEOUT
       unsigned long times = 0;
-      
+
       while ( !radio.available() ){ //Se nada for recebido
         times = micros() - waiting_time;
         if ((times) >= 200000 ){ //Tempo de espera > 200ms
             timeout = true; //TIMEOUT atingido
-            break;  //Para o while
-        }     
+            break; //Para o while
+        }
       }
-          
+
       if ( timeout ){ //Se TIMEOUT for verdadeiro
           Serial.println("\b \b Tempo Esgotado"); //Imprime "Tempo Esgotado"
       }
@@ -122,8 +122,8 @@ void loop() {
 String getPadded(int num) {
   char buff[5];
   char padded[6];
-  
-  sprintf(buff, "%.4u", num); 
+
+  sprintf(buff, "%.4u", num);
 
   padded[0] = buff[0];
   padded[1] = buff[1];

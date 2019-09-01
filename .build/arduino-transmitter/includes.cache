@@ -1,0 +1,37 @@
+[
+  {
+    "Sourcefile": "",
+    "Include": "",
+    "Includepath": "C:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\cores\\arduino"
+  },
+  {
+    "Sourcefile": "",
+    "Include": "",
+    "Includepath": "C:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\variants\\standard"
+  },
+  {
+    "Sourcefile": "c:\\Users\\matmany\\Desktop\\Iron_lady\\Projetos\\Andamento\\Fapes\\main\\raspberry-comunication\\.build\\arduino-transmitter\\sketch\\arduino-transmitter.ino.cpp",
+    "Include": "SPI.h",
+    "Includepath": "C:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\libraries\\SPI\\src"
+  },
+  {
+    "Sourcefile": "c:\\Users\\matmany\\Desktop\\Iron_lady\\Projetos\\Andamento\\Fapes\\main\\raspberry-comunication\\.build\\arduino-transmitter\\sketch\\arduino-transmitter.ino.cpp",
+    "Include": "RF24.h",
+    "Includepath": "C:\\Users\\matmany\\Documents\\Arduino\\libraries\\RF24-master"
+  },
+  {
+    "Sourcefile": "c:\\Users\\matmany\\Desktop\\Iron_lady\\Projetos\\Andamento\\Fapes\\main\\raspberry-comunication\\.build\\arduino-transmitter\\sketch\\arduino-transmitter.ino.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "C:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\libraries\\SPI\\src\\SPI.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "C:\\Users\\matmany\\Documents\\Arduino\\libraries\\RF24-master\\RF24.cpp",
+    "Include": "",
+    "Includepath": ""
+  }
+]
