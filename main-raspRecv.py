@@ -3,6 +3,22 @@ from lib_nrf24 import NRF24
 import time
 import spidev
 
+import socket
+
+def sendToServe(tcp, dest, msg, ):
+    tcp.connect(dest)
+    msg = msg.encode()
+    print('Enviando:', msg)
+    tcp.sendall(msg)
+    #data = tcp.recv(1024)
+    #print ('Received', repr(data))
+    tcp.close()
+
+HOST = '192.168.0.23'
+PORT = 9090
+tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+dest = (HOST, PORT)
+
 GPIO.setmode(GPIO.BCM)
 pin = 19
 #GPIO.setup(pin, GPIO.OUT)
@@ -50,6 +66,7 @@ try:
             if (n >= 32 and n <= 126):
                 string += chr(n)
         print("Our received message decodes to: {}".format(string))
+        sendToServe(tcp,dest,string)
         time.sleep(1)
 except KeyboardInterrupt:
     print("\n")
