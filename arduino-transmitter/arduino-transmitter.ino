@@ -15,7 +15,7 @@
 #include "printf.h"
 // ===============================================================================
 // --- ID ---
-#define ID "AA02"
+#define ID "BB02"
 
 // ===============================================================================
 // --- Variáveis Globais ---
@@ -39,7 +39,7 @@ void setup() {
   radio.begin(); //Inicia comunicação do objeto radio
   radio.setPALevel(RF24_PA_MIN); //Configura potência do objeto radio
   radio.setDataRate(RF24_1MBPS );
-  radio.setChannel(0X76);
+  radio.setChannel(0X78);
   radio.enableDynamicPayloads();
   radio.powerUp();
   switch(radioNumber){ //Configura os pipes de acordo com o número do radio
@@ -50,7 +50,9 @@ void setup() {
     
     case 2:
       //radio.openWritingPipe(0xF0F0F0F0E1LL);
-      radio.openWritingPipe(addresses[0]); //Radio0: Fala no pipe 2
+      //0x65646f4e31
+      //radio.openWritingPipe(addresses[0]);
+      radio.openWritingPipe(0x65646f4E31LL); //Radio0: Fala no pipe 2
       //radio.openReadingPipe(1,addresses[2]); //Radio0: Escuta no pipe 0
       radio.openReadingPipe(1,0xE8E8F0F0E1LL);
       break;
