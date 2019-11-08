@@ -19,8 +19,7 @@
 
 // ===============================================================================
 // --- Variáveis Globais ---
-int radioNumber = 2
-; //Número do Rádio Transmissor 1 ou 2
+int radioNumber = 2; //Número do Rádio Transmissor 1 ou 2
 RF24 radio(7,8); //Cria o objeto radio com portas CE e CS
 byte addresses[][6] = {"1Node","2Node","3Node"}; //Endereço dos pipes
 
