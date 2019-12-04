@@ -21,6 +21,20 @@ test = list(reversed(hexaCode))
 pipes2 = [[0xE8, 0xE8, 0xF0, 0xF0, 0xE1], [0xF0, 0xF0, 0xF0, 0xF0, 0xE1]]
 channels = [0x76,0x78]
 radio = NRF24(GPIO, spidev.SpiDev())
+
+def arduinoWakeUp():
+    contador = 0
+    message = list("W")
+    while len(message) < 5:
+        message.append(0)
+    while (radio.write(message) or (contador < 100)):
+      contador = contador + 1
+    else:
+        print(contador)
+
+    print("Mensagems enviada: {}".format(message))
+    radio.startListening()
+
 radio.begin(0, pin)
 #0, 17
 radio.setPayloadSize(32)
@@ -35,21 +49,20 @@ radio.setCRCLength(2)
 
 radio.openWritingPipe(pipes2[0])
 #radio.openReadingPipe(1, pipes2[1])
-radio.openReadingPipe(1,test) #test
+radio.openReadingPipe(1,pipes2[1]) #test
 radio.printDetails()
-radio.startListening()
+#radio.startListening()
 # radio.print_status()
 radio.powerUp()
 #print("1Node".enconde("hex"))
 channel = 0
 try:
     while True:
-        # radio.printDetails()
+        start = time.time()
+        arduinoWakeUp()
+
         while not radio.available(0):
-            # print(radio.whatHappened())
-            # radio.printDetails()
-            time.sleep(1/100)
-            #print("not online")
+            time.sleep(1/100) 
 
         while radio.available(0):
             receivedMessage = []
@@ -63,17 +76,17 @@ try:
                if (n >= 32 and n <= 126):
                    string += chr(n)
             print("Our received message decodes to: {}".format(string))
-            time.sleep(1)
+            time.sleep(2)
 
-        radio.stopListening()
-        if channel == 1:
-         channel = 0
-        else:
-         channel+=1
-        radio.setChannel(channels[channel])
-        radio.write(message)
-        print("------Channel:", channel)
-        radio.startListening()
+        # radio.stopListening()
+        # if channel == 1:
+        #  channel = 0
+        # else:
+        #  channel+=1
+        # radio.setChannel(channels[channel])
+        # radio.write(message)
+        #print("------Channel:", channel)
+        #radio.startListening()
 except KeyboardInterrupt:
     print("\n")
 except:
