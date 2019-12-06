@@ -31,20 +31,14 @@ void setup (){
     radio.maskIRQ(1,1,0);
     
     pinMode(interruptPin, INPUT_PULLUP);
-    attachInterrupt(digitalPinToInterrupt(interruptPin), radioRecevMessage, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(interruptPin), radioRecevedMessage, FALLING);
 }
 
 void loop (){
-  /*
-  if(radio.available()){
-    radio.read(receivedMessage, sizeof(receivedMessage));
-    Serial.println(receivedMessage);
-    Serial.println("Turning off the radio.");
-    //radio.stopListening();
-  }*/
+
 }
 
-void radioRecevMessage() {
+void radioRecevedMessage() {
   char tramac[13];
   if(radio.available()){
     radio.read(receivedMessage, sizeof(receivedMessage));
@@ -63,6 +57,7 @@ void radioRecevMessage() {
       Serial.println("Sucesso");
     }
   radio.startListening();
+  
   
 }
 

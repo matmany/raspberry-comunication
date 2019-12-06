@@ -5,20 +5,20 @@
 
 #define ID "BB02"
 
-int radioNumber = 2; //Número do Rádio Transmissor 1 ou 2
+const byte interruptPin = 2;
 RF24 radio(7,8); //Cria o objeto radio com portas CE e CS
+
+int radioNumber = 2; //Número do Rádio Transmissor 1 ou 2
 String s1s;
 String s2s;
 String trama;
-char tramac[13];
-#define interrup 2
+char receivedMessage[32] = {0};
+bool val;
 
 void setup (){
-    pinMode(interrup, INPUT_PULLUP);
     Serial.begin(9600); //Inicia comunicação com Monitor Serial 
     printf_begin();
     radio.begin(); //Inicia comunicação do objeto radio
-    radio.maskIRQ(1,1,0);
     radio.setPALevel(RF24_PA_MIN); //Configura potência do objeto radio
     radio.setDataRate(RF24_1MBPS );
     radio.setChannel(0X76); //canal
@@ -28,14 +28,44 @@ void setup (){
     radio.openReadingPipe(1,0xE8E8F0F0E1LL);
     radio.printDetails();
     radio.startListening();
-
+    radio.maskIRQ(1,1,0);
+    pinMode(interruptPin, INPUT_PULLUP);
+    // attachInterrupt(digitalPinToInterrupt(interruptPin), radioRecevedMessage, FALLING);
 }
 
-void loop() {
-    Serial.println("Runing");
-    delay(3000);
-    sleepNow();
+void loop (){
+  /*
+  if(radio.available()){
+    radio.read(receivedMessage, sizeof(receivedMessage));
+    Serial.println(receivedMessage);
+    Serial.println("Turning off the radio.");
+    //radio.stopListening();
+  }*/
+  delay(500);
+  dormir();
+}
 
+void radioRecevedMessage() {
+  char tramac[13];
+  if(radio.available()){
+    radio.read(receivedMessage, sizeof(receivedMessage));
+    Serial.println("Receving....");
+    val = digitalRead(interruptPin);
+    Serial.println(val);
+  }
+  generateFakeData().toCharArray(tramac, 13);
+  radio.stopListening();
+  Serial.print(F("Enviando: "));
+  Serial.print(tramac);
+  if (!radio.write(tramac, 13)){                              //Envia a Trama
+       Serial.println(": Falha"); //Imprime "Falha" caso não seja enviada
+   }
+  else{
+      Serial.println("Sucesso");
+    }
+  radio.startListening();
+  
+  
 }
 
 String generateFakeData() {
@@ -54,35 +84,6 @@ String generateFakeData() {
     return trama;
 }
 
-void wakedUp(){
-    char tramac[13];
-    sleep_disable();
-    detachInterrupt(0);  
-    Serial.println("Acordado");
-    generateFakeData().toCharArray(tramac, 13);
-    radio.stopListening(); // Para de escutar
-    
-    Serial.print(F("Enviando: "));
-    Serial.print(tramac);
-    if (!radio.write(tramac, 13)){                              //Envia a Trama
-        Serial.println(": Falha"); //Imprime "Falha" caso não seja enviada
-    }
-    else{
-        Serial.println("Sucesso");
-    }
-    radio.startListening();
-    delay(1000);
-    
-}
-
-void sleepNow(){
-    Serial.println("Sleepeing");
-    set_sleep_mode(SLEEP_MODE_PWR_DOWN);
-    sleep_enable();
-    attachInterrupt(digitalPinToInterrupt(interrup), wakedUp, HIGH);
-    sleep_cpu(); 
-}
-
 String getPadded(int num) {
   char buff[5];
   char padded[6];
@@ -97,4 +98,14 @@ String getPadded(int num) {
   padded[5] = '\0'; // The terminating NULL
 
   return String(padded);
+}
+
+void dormir() {
+    set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+
+    sleep_enable();
+
+    attachInterrupt(digitalPinToInterrupt(interruptPin), radioRecevedMessage, LOW);
+
+    sleep_cpu();
 }
