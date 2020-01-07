@@ -1,24 +1,6 @@
 import selectors
+import types
 import socket
-sel = selectors.DefaultSelector()
-HOST = '192.168.0.23'
-PORT = 9090
-lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-orig = (HOST, PORT)
-lsock.bind(orig)
-lsock.listen()
-print('listening on', orig)
-lsock.setblocking(False)
-sel.register(lsock, selectors.EVENT_READ, data=None)
-
-while True: 
-    events = sel.select(timeout=None)
-    for key, mask in events:
-        if key.data is None:
-            accept_wrapper(key.fileobj)
-        else:
-            service_connection(key, mask)
-
 
 def accept_wrapper(socket):
     conn, addr = socket.accept()
@@ -44,4 +26,30 @@ def service_connection(key, mask):
         if data.outb:
             print('echoing',repr(data.outb), 'to', data.addr)
             sent = sock.send(data.outb)
-            data.outb = data.outb[sent:]
+            data.outb = data.outb[sent:] # sended data is removed from buffer
+
+sel = selectors.DefaultSelector()
+HOST = '192.168.0.37'
+PORT = 9090
+lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+orig = (HOST, PORT)
+lsock.bind(orig)
+lsock.listen()
+print('listening on', orig)
+lsock.setblocking(False)
+sel.register(lsock, selectors.EVENT_READ, data=None)
+
+try:
+    while True: 
+        events = sel.select(timeout=None)
+        for key, mask in events:
+            if key.data is None:
+                accept_wrapper(key.fileobj)
+            else:
+                service_connection(key, mask)
+except KeyboardInterrupt:
+    print("caught keyboard interrupt, exiting")
+finally:
+    sel.close()
+
+

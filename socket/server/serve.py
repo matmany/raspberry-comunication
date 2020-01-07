@@ -1,10 +1,12 @@
 import socket
-HOST = '192.168.0.23'
+HOST = '192.168.0.37'
 PORT = 9090
 tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 orig = (HOST, PORT)
 tcp.bind(orig)
+print("star listening")
 tcp.listen()
+print("listened")
 #tcp.listen(1)
 while True:
     print("first while")
