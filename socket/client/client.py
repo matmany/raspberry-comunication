@@ -1,5 +1,5 @@
 from lib_nrf24 import NRF24
-from readArduino.dadosBombeiro import getData
+from dadosBombeiro import getData
 import socket
 import RPi.GPIO as GPIO
 import time
@@ -41,21 +41,25 @@ channel = 0
 ##################################################
 
 #############sockect config #####################
-HOST = '192.168.0.23'
+HOST = '192.168.0.37'
 PORT = 9090
-tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-dest = (HOST, PORT)
-tcp.connect(dest)
+
 #################################################
-
-
-#msg1 = '283457BABYTESTE'
-#
-msg1 = getData(radio)
-msg = msg1.encode()
-while True:
-    print ('Enviando:', msg)
-    tcp.sendall(msg)
-    data = tcp.recv(1024)
-    print ('Received', repr(data))
-    time.sleep(1)
+try:
+ while True:
+  msg1 = getData(radio)
+  print("MSG=========>")
+  print(msg1)
+  if msg1 is not None:
+   msg = msg1.encode()
+   print ('Enviando:', msg)
+   with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    s.connect((HOST, PORT))
+    s.sendall(msg)
+    data = s.recv(1024)
+  else:
+   print("MSG is Empty")
+  time.sleep(1)
+  print ("end")
+finally:
+ GPIO.cleanup()

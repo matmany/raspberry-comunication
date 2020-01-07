@@ -10,13 +10,13 @@ def getData(radio):
         message.append(0)
     try:
         #start = time.time()
-        while 
+        while True: 
             radio.write(message)
             print("Sent the message: {}".format(message))
             radio.startListening()
                 
             while not radio.available(0):
-                time.sleep(1/100)
+                time.sleep(1/10)
 
             while radio.available(0):
             #Recebe Msg de Arduino
@@ -26,7 +26,6 @@ def getData(radio):
 
                 print("Translating our received Message into unicode characters...")
                 string = ""
-
                 for n in receivedMessage:
                     if (n >= 32 and n <= 126):
                         string += chr(n)
@@ -39,4 +38,4 @@ def getData(radio):
     except:
         print("erros??")
     finally:
-        GPIO.cleanup()
+        print("end")
