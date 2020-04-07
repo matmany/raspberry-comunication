@@ -4,6 +4,11 @@ import time
 import spidev
 
 def getData(radio):
+    """Get incomming message from arduino
+    param radio: The radio configure for the transmitting
+    returns: String message
+    raises: NoneMessageReceveid
+    """
     string  = None
     message = list("GETSTRING")
     while len(message) < 32:
@@ -33,6 +38,9 @@ def getData(radio):
                 radio.stopListening()
                 time.sleep(1)
                 return string
+                # if string is None:
+                #     raise NoneMessageReceived(f"{string} is empty")
+                # return string
     except KeyboardInterrupt:
         print("\n")
     except:

@@ -6,7 +6,7 @@
 #define ID "BB02"
 
 const byte interruptPin = 2;
-RF24 radio(7,8); //Cria o objeto radio com portas CE e CS
+RF24 radio(9,10); //Cria o objeto radio com portas CE e CS
 
 int radioNumber = 2; //Número do Rádio Transmissor 1 ou 2
 String s1s;
@@ -16,6 +16,8 @@ char receivedMessage[32] = {0};
 bool val;
 
 void setup (){
+    
+    Serial.println("Entrando no Setup");
     Serial.begin(9600); //Inicia comunicação com Monitor Serial 
     printf_begin();
     radio.begin(); //Inicia comunicação do objeto radio
@@ -30,10 +32,12 @@ void setup (){
     radio.startListening();
     radio.maskIRQ(1,1,0);
     pinMode(interruptPin, INPUT_PULLUP);
+    //attachInterrupt(digitalPinToInterrupt(interruptPin), radioRecevedMessage, LOW);
     // attachInterrupt(digitalPinToInterrupt(interruptPin), radioRecevedMessage, FALLING);
 }
 
 void loop (){
+ 
   /*
   if(radio.available()){
     radio.read(receivedMessage, sizeof(receivedMessage));
@@ -42,6 +46,7 @@ void loop (){
     //radio.stopListening();
   }*/
   delay(500);
+  
   dormir();
 }
 
