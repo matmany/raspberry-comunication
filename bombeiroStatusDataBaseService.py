@@ -13,3 +13,36 @@ reading = {"raspID": "CCC",
             "pulso": 56.2, 
             "horaio": datetime.datetime.utcnow()}
 reading_id = collection.insert_one(reading)
+
+class BombeiroStatusDataBaseService:
+    def __init__(self, raspberryId,endereco, username, password, authSource, authMechanism):
+        self.raspberryId = raspberryId
+        # self.endereco = endereco
+        # self.username = username
+        # self.password = password
+        # self.authSource = authSource
+        # self.authMechanism = authMechanism
+        self.dataBaseBombeiros = self.connectToMongo(endereco, username, password, authSource, authMechanism)
+
+    def connectToMongo(endereco, username, password, authSource, authMechanism):
+        client = MongoClient(endereco, 
+                    username=username, 
+                    password=password,
+                    authSource=authSource,
+                    authMechanism=authMechanism)
+    
+    def inserirBombeiroDB(monoxido, glp, pulso, horaio):
+        reading = {"raspID": self.raspberryId, 
+            "monoxido": monoxido, 
+            "glp": glp, 
+            "pulso": pulso, 
+            "horaio":horaio}
+        reading_id = collection.insert_one(reading)
+        if(reading_id):
+            return True
+        return False
+        
+
+
+        
+
