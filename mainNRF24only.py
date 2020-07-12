@@ -1,16 +1,28 @@
 import RPi.GPIO as GPIO
 from lib_nrf24 import NRF24
+from bombeiroDataBaseService import BombeiroDataBaseService
 import time
+import datetime
 import spidev
 import radio_config as config
 
 GPIO.setmode(GPIO.BCM)
-pin = 19
+
+#Configuração da conexão soket com banco
+dataBase = BombeiroDataBaseService(raspberryId='TTT',
+    endereco='mongodb://192.168.0.14:27017',
+    username='pi42',
+    password='12345')
+#-----------------------
+
+#Confinguração do radio:
+radioPin = 19
 pipes = [[0xE8, 0xE8, 0xF0, 0xF0, 0xE1], [0xF0, 0xF0, 0xF0, 0xF0, 0xE1]]
 radio = NRF24(GPIO, spidev.SpiDev())
-config.configRadio(radio, pin, pipes)
+config.configRadio(radio, radioPin, pipes)
 radio.startListening()
 radio.powerUp()
+#----------------------
 try:
     while True:
         print("start")
@@ -32,7 +44,7 @@ try:
                    string += chr(n)
             print("Our received message decodes to: {}".format(string))
             time.sleep(1)
-
+            # pegar dados da string dos Arduinos string[2:5]
         print("end of message")
 except KeyboardInterrupt:
     print("\n")
