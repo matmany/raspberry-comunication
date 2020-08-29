@@ -5,6 +5,7 @@ import time
 import datetime
 import spidev
 import radio_config as config
+import breakString
 
 GPIO.setmode(GPIO.BCM)
 
@@ -42,9 +43,17 @@ try:
             for n in receivedMessage:
                if (n >= 32 and n <= 126):
                    string += chr(n)
-            print("Our received message decodes to: {}".format(string))
+            trama = format(string)
+            print("Our received message decodes to: {}".trama)
             time.sleep(1)
             # pegar dados da string dos Arduinos string[2:5]
+            
+            data = breakString.tramaValues(trama)
+            
+            print(data["id"])
+            print(data["s1"])
+            print(data["s2"])
+
         print("end of message")
 except KeyboardInterrupt:
     print("\n")
