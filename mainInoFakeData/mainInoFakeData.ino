@@ -6,7 +6,7 @@
 
 const byte interruptPin = 2;
 RF24 radio(9,10); //Cria o objeto radio com portas CE e CS
-
+//RF24 radio(8,7);
 int radioNumber = 2; //Número do Rádio Transmissor 1 ou 2
 String s1s;
 String s2s;
@@ -16,7 +16,7 @@ bool val;
 
 void setup (){
     Serial.begin(9600); //Inicia comunicação com Monitor Serial
-    while(!Serial);
+    //while(!Serial);
     printf_begin();
     delay(1000);
     radio.begin(); //Inicia comunicação do objeto radio
@@ -26,7 +26,10 @@ void setup (){
     radio.enableDynamicPayloads();
     radio.powerUp();
     radio.openWritingPipe(0xF0F0F0F0E1LL); 
+    
     radio.openReadingPipe(1,0xE8E8F0F0E1LL);
+    //radio.openWritingPipe(0xE8E8F0F0E1LL); 
+    //radio.openReadingPipe(1,0xF0F0F0F0E1LL);
     radio.printDetails();
     radio.startListening();
     //radio.maskIRQ(1,1,0);
@@ -40,7 +43,7 @@ delay(500); //Aguarda 1 segundo
 }
 
 void radioRecevedMessage() {
-  //Serial.println("Entrando");
+  Serial.println("Entrando");
   char tramac[13];
   if(radio.available()){
     radio.read(receivedMessage, sizeof(receivedMessage));
@@ -50,14 +53,14 @@ void radioRecevedMessage() {
   }
   generateFakeData().toCharArray(tramac, 13);
   radio.stopListening();
-  //Serial.print(F("Enviando: "));
-  //Serial.print(tramac);
+  Serial.print(F("Enviando: "));
+  Serial.print(tramac);
   
   if (!radio.write(tramac, 13)){                              //Envia a Trama
-      // Serial.println(": Falha"); //Imprime "Falha" caso não seja enviada
+       Serial.println(": Falha"); //Imprime "Falha" caso não seja enviada
    }
   else{
-     // Serial.println("Sucesso");
+      Serial.println("Sucesso");
     }
   radio.startListening();
   
