@@ -9,8 +9,10 @@ import breakString
 
 GPIO.setmode(GPIO.BCM)
 
+raspId = "ABC"
+
 #Configuração da conexão soket com banco
-dataBase = BombeiroDataBaseService(raspberryId='TTT',
+dataBase = BombeiroDataBaseService(raspId,
     endereco='mongodb://192.168.0.14:27017',
     username='pi42',
     password='12345')
@@ -44,7 +46,8 @@ try:
                if (n >= 32 and n <= 126):
                    string += chr(n)
             trama = format(string)
-            print("Our received message decodes to: {}".trama)
+            print(trama)
+            print("Our received message decodes to: {}".format(string))
             time.sleep(1)
             # pegar dados da string dos Arduinos string[2:5]
             
@@ -53,6 +56,9 @@ try:
             print(data["id"])
             print(data["s1"])
             print(data["s2"])
+            time = datetime.datetime.utcnow()
+            dataBase.insert(data["s1"], data["s2"], 0.0, time) 
+
 
         print("end of message")
 except KeyboardInterrupt:

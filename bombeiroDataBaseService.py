@@ -19,7 +19,7 @@ class BombeiroDataBaseService:
         db = client.bombeiros
         self.collection = db.raspberry
     
-    def insert(monoxido, glp, pulso, horaio):
+    def insert(self, monoxido, glp, pulso, horaio):
         reading = {"raspID": self.raspberryId, 
             "monoxido": monoxido, 
             "glp": glp, 
