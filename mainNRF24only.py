@@ -50,15 +50,16 @@ try:
             print("Our received message decodes to: {}".format(string))
             time.sleep(1)
             # pegar dados da string dos Arduinos string[2:5]
-            
+            #print("almost started")
             data = breakString.tramaValues(trama)
             
-            print(data["id"])
-            print(data["s1"])
-            print(data["s2"])
-            time = datetime.datetime.utcnow()
-            dataBase.insert(data["s1"], data["s2"], 0.0, time) 
+            #print(data["id"])
+            #print(data["s1"])
+            #print(data["s2"])
+            currenTtime = datetime.datetime.utcnow()
+            dataBase.insert(data["s1"], data["s2"], 0.0, currenTtime) 
 
+            #time.sleep(1)
 
         print("end of message")
 except KeyboardInterrupt:

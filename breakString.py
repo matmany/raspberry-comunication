@@ -7,6 +7,5 @@ def tramaValues (trama = "000000000000"):
         "s1": float(s1),
         "s2": float(s2)
     }
-    return data;
-    
+    return data; 
 

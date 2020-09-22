@@ -7,4 +7,5 @@ dataBase = BombeiroDataBaseService(raspberryId='TTT',
     password='12345')
 time = datetime.datetime.utcnow()
 
-dataBase.insert( 77.7, 77.7, 0.0, time)
+test = dataBase.insert( 77.7, 77.7, 0.0, time)
+print(test)
